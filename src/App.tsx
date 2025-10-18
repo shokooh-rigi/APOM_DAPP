@@ -10,6 +10,7 @@ import DeFi from "./pages/DeFi";
 import NFTMarketplace from "./pages/NFTMarketplace";
 import Launchpad from "./pages/Launchpad";
 import Governance from "./pages/Governance";
+import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/nft-marketplace" element={<NFTMarketplace />} />
           <Route path="/launchpad" element={<Launchpad />} />
           <Route path="/governance" element={<Governance />} />
+          <Route path="/notifications" element={<Notifications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

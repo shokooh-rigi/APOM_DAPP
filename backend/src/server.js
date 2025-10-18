@@ -16,6 +16,7 @@ const launchpadRoutes = require('./routes/launchpad.js');
 const governanceRoutes = require('./routes/governance.js');
 const userRoutes = require('./routes/user.js');
 const analyticsRoutes = require('./routes/analytics.js');
+const notificationRoutes = require('./routes/notifications.js');
 
 // Import WebSocket handlers
 const { setupWebSocketHandlers } = require('./websocket/handlers.js');
@@ -29,7 +30,7 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8000;
 
 // Security middleware
 app.use(helmet({
@@ -45,7 +46,7 @@ app.use(helmet({
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -89,6 +90,7 @@ app.use('/api/launchpad', launchpadRoutes);
 app.use('/api/governance', governanceRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // WebSocket connection handling
 wss.on('connection', (ws, req) => {
