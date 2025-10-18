@@ -139,7 +139,7 @@ npm run dev
 ```
 
 * Your default browser should open automatically.
-* If not, open [http://localhost:8080](http://localhost:8080) manually.
+* If not, open [http://localhost:3000](http://localhost:3000) manually.
 * You should now see the **Decentralized Gaming & DeFi Platform running** 🎉
 
 ---
@@ -158,10 +158,10 @@ The platform includes a powerful backend server that provides APIs and real-time
 
 ### Backend Access
 
-- **Server URL**: http://localhost:3001
-- **Health Check**: http://localhost:3001/health
-- **API Base**: http://localhost:3001/api
-- **WebSocket**: ws://localhost:3001
+- **Server URL**: http://localhost:8000
+- **Health Check**: http://localhost:8000/health
+- **API Base**: http://localhost:8000/api
+- **WebSocket**: ws://localhost:8000
 
 ### Available API Endpoints
 
@@ -197,7 +197,7 @@ The platform includes a powerful backend server that provides APIs and real-time
 The backend provides real-time updates via WebSocket:
 
 ```javascript
-const ws = new WebSocket('ws://localhost:3001');
+const ws = new WebSocket('ws://localhost:8000');
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
@@ -229,9 +229,9 @@ The backend server logs all API requests, WebSocket connections, and errors to t
 #### Environment Configuration
 Create a `.env` file in the backend directory:
 ```env
-PORT=3001
+PORT=8000
 NODE_ENV=development
-FRONTEND_URL=http://localhost:8080
+FRONTEND_URL=http://localhost:3000
 ```
 
 ---
@@ -250,8 +250,8 @@ The React frontend provides a modern, responsive interface for all platform feat
 
 ### Frontend Access
 
-- **Application URL**: http://localhost:8080
-- **Development Server**: http://localhost:8080
+- **Application URL**: http://localhost:3000
+- **Development Server**: http://localhost:3000
 - **Build Output**: `dist/` directory
 
 ### Frontend Development
@@ -300,14 +300,14 @@ npm run clean            # Clean all build artifacts
 
 ### Fetching Games Data
 ```javascript
-const response = await fetch('http://localhost:3001/api/gaming/games');
+const response = await fetch('http://localhost:8000/api/gaming/games');
 const games = await response.json();
 console.log(games.data); // Array of games
 ```
 
 ### Real-time Market Data
 ```javascript
-const ws = new WebSocket('ws://localhost:3001');
+const ws = new WebSocket('ws://localhost:8000');
 ws.onopen = () => {
   ws.send(JSON.stringify({
     type: 'subscribe',
@@ -318,7 +318,7 @@ ws.onopen = () => {
 
 ### User Authentication (Future)
 ```javascript
-const response = await fetch('http://localhost:3001/api/user/login', {
+const response = await fetch('http://localhost:8000/api/user/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ email, password })
@@ -331,22 +331,51 @@ const response = await fetch('http://localhost:3001/api/user/login', {
 
 ### 1. Verify Backend is Running
 ```bash
-curl http://localhost:3001/health
+curl http://localhost:8000/health
 ```
 Expected: `{"status":"OK","timestamp":"...","uptime":...}`
 
 ### 2. Verify Frontend is Running
-Open http://localhost:8080 in your browser
+Open http://localhost:3000 in your browser
 Expected: APOM DApp homepage loads successfully
 
 ### 3. Test API Endpoints
 ```bash
-curl http://localhost:3001/api/gaming/games
+curl http://localhost:8000/api/gaming/games
 ```
 Expected: JSON response with games data
 
 ### 4. Test WebSocket Connection
-Use browser console or a WebSocket testing tool to connect to `ws://localhost:3001`
+Use browser console or a WebSocket testing tool to connect to `ws://localhost:8000`
+
+---
+
+## 🔔 Notifications
+
+The platform includes a built-in notification system with a frontend UI and backend API.
+
+### Backend Endpoints
+
+- `GET /api/notifications/:userId` — Fetch notifications for a user
+- `PUT /api/notifications/:id/read` — Mark a notification as read
+- `DELETE /api/notifications/:id` — Delete a notification
+- `POST /api/notifications/:userId` — Create a new notification for a user
+
+Base URL in development: `http://localhost:8000/api`
+
+### Frontend Usage
+
+- The notification UI lives in `src/components/NotificationSystem.tsx`
+- It uses `src/services/api.ts` (base `http://localhost:8000/api`)
+- Demo data is shown if the API is empty/unavailable
+
+Example: create a demo notification from the UI ("+ Add Demo" button) or via curl:
+
+```bash
+curl -X POST http://localhost:8000/api/notifications/user_001 \
+  -H 'Content-Type: application/json' \
+  -d '{"type":"game_reward","title":"Demo","message":"Hello from demo"}'
+```
 
 ---
 
@@ -355,8 +384,8 @@ Use browser console or a WebSocket testing tool to connect to `ws://localhost:30
 ### Common Issues
 
 **Port Already in Use**
-- Frontend (8080): Change port in `vite.config.ts`
-- Backend (3001): Change port in `.env` file
+- Frontend (3000): Change port in `vite.config.ts`
+- Backend (8000): Change port in `.env` file
 
 **Dependencies Missing**
 ```bash
@@ -364,12 +393,12 @@ npm install
 ```
 
 **Backend Won't Start**
-- Check if port 3001 is available
+- Check if port 8000 is available
 - Verify `.env` file exists
 - Check console for error messages
 
 **Frontend Won't Load**
-- Check if port 8080 is available
+- Check if port 3000 is available
 - Verify all dependencies are installed
 - Check browser console for errors
 
